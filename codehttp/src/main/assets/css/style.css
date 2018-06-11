@@ -1,0 +1,26 @@
+body {
+  background: black;
+  color: white;
+}
+
+pre {
+  float:left;
+  width:60%;
+}
+
+pre code {
+  font: 11pt/1.25 Monaco, monospace;
+}
+
+/* Use a media query to add a break point at 800px: */
+@media screen and (max-width:10px) {
+  pre {
+    width:50%; /* The width is 100%, when the viewport is 800px or smaller */
+  }
+}
+
+.debug { color: Snow; }
+.info  { color: LawnGreen; }
+.warn  { color: GoldenRod; }
+.error { color: LightCoral; }
+.digit { color: Purple; }

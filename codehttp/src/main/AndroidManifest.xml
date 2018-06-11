@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="corp.ny.com.codehttp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application android:name=".system.App">
+        <activity
+            android:name=".views.ItemListActivity"
+            android:label="@string/title_item_list"
+            android:logo="@drawable/ic_codehttp"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".views.ItemDetailActivity"
+            android:label="@string/title_item_detail"
+            android:parentActivityName=".views.ItemListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="corp.ny.com.codehttp.views.ItemListActivity" />
+        </activity>
+
+    </application>
+
+</manifest>
