@@ -101,6 +101,9 @@ Here you can identify how to make and action accordind to server message
                         break;
                 }
 ```
+Complete TestController Sample code
+[Sample controller](https://github.com/yann-yvan/CodeHttp/blob/master/app/src/main/java/corp/ny/com/httpflowers/TestController.java)
+
 Please check to see supported message
 [Supported message](https://github.com/yann-yvan/CodeHttp/blob/master/codehttp/src/main/java/corp/ny/com/codehttp/response/RequestCode.java)
 
