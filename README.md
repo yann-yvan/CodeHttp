@@ -25,7 +25,7 @@ allprojects {
 #### Add gradle dependecy
 ```
 dependencies {
-   implementation 'com.github.yann-yvan:CodeHttp:V1.0'
+   implementation 'com.github.yann-yvan:CodeHttp:V1.1'
 }
 ```
 ### Step 3:
