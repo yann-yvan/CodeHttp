@@ -19,11 +19,13 @@ public class DefaultResponse<T> {
     private String token;
     private T model;
     private ArrayList<T> modelList;
+    private String route;
     private PrepareRequest prepareRequest = new PrepareRequest();
     private HashMap family = new HashMap();
 
     public DefaultResponse(String route, JSONObject data, boolean isTokenRequired) throws JSONException {
         prepareRequest.setRoute(route);
+        this.route = route;
         prepareRequest.setTokenRequired(isTokenRequired);
         if (data != null)
             prepareRequest.setOutgoing(data.toString());
@@ -32,6 +34,7 @@ public class DefaultResponse<T> {
     public DefaultResponse(String route, boolean isTokenRequired) {
         prepareRequest.setRoute(route);
         prepareRequest.setTokenRequired(isTokenRequired);
+        this.route = route;
     }
 
     public PrepareRequest getPrepareRequest() {
@@ -39,6 +42,7 @@ public class DefaultResponse<T> {
     }
 
     public void setPrepareRequest(PrepareRequest prepareRequest) {
+        prepareRequest.setRoute(route);
         this.prepareRequest = prepareRequest;
     }
 
@@ -106,6 +110,10 @@ public class DefaultResponse<T> {
 
     public ArrayList<T> getModelList() {
         return modelList;
+    }
+
+    public HashMap getFamily() {
+        return family;
     }
 }
 

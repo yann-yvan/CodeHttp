@@ -45,6 +45,14 @@
                 android:id="@+id/btn_post"
                 android:text="Post" />
 
+            <Button
+                android:id="@+id/btn_fast_post"
+                android:text="Fast Post" />
+
+            <Button
+                android:id="@+id/btn_fast_get"
+                android:text="Fast Get" />
+
         </GridLayout>
     </ScrollView>
 

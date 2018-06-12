@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import corp.ny.com.codehttp.controllers.BaseController;
 import corp.ny.com.codehttp.exceptions.NoInternetException;
 import corp.ny.com.codehttp.exceptions.RequestException;
+import corp.ny.com.codehttp.models.PrepareRequest;
 import corp.ny.com.codehttp.response.DefaultResponse;
 import corp.ny.com.codehttp.response.RequestCode;
 
@@ -83,6 +84,11 @@ public class TestController extends BaseController {
             protected DefaultResponse doInBackground(Void... voids) {
 
                 try {
+                    PrepareRequest request = new PrepareRequest();
+                    request.setOutgoing("json data");
+                    //or you can set a JSonObject directly like this
+                    request.getOutgoingJsonObject().put("email", "foo@codehttp.com");
+                    response.setPrepareRequest(request);
                     response.getPrepareRequest().getOutgoingJsonObject().put("user", new JSONObject()
                             .put("email", "foo@codehttp.com")
                             .put("password", 12345678)

@@ -89,6 +89,11 @@ public class PrepareRequest implements Serializable {
         this.outgoing = new JSONObject(outgoing);
     }
 
+    /**
+     * Get json data send for the request
+     *
+     * @return a {@link JSONObject} that has data
+     */
     public JSONObject getOutgoingJsonObject() {
         return outgoing;
     }
