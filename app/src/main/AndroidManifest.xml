@@ -12,9 +12,6 @@
         <meta-data
             android:name="BASE_URL"
             android:value="http://192.168.100.2:8082/api" />
-        <meta-data
-            android:name="DEBUG_MODE"
-            android:value="true" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
