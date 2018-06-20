@@ -25,6 +25,14 @@ public class SpeedController<T> extends BaseController {
         this.afterExecute = afterExecute;
     }
 
+    /**
+     * Run your request directly in the UIThreads safe
+     *
+     * @param method       of the request
+     * @param response     your data object
+     * @param afterExecute handle exception and server response
+     * @return a new instance
+     */
     public static SpeedController run(PrepareRequest.Method method, DefaultResponse response, OnAfterExecute afterExecute) {
         SpeedController controller = new SpeedController(afterExecute);
         controller.execute(method, response);
@@ -76,6 +84,9 @@ public class SpeedController<T> extends BaseController {
         return task;
     }
 
+    /**
+     * cancel request execution
+     */
     public void cancel() {
         if (task != null)
             task.cancel(true);

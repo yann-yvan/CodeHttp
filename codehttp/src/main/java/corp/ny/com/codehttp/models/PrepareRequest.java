@@ -5,7 +5,6 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
-import corp.ny.com.codehttp.system.App;
 import corp.ny.com.codehttp.utils.ManifestReader;
 
 /**
@@ -50,7 +49,6 @@ public class PrepareRequest implements Serializable {
                 e1.printStackTrace();
             }
         }
-        App.getInstance().getDebugger().updateNotification(this);
     }
 
     public boolean isTokenRequired() {
