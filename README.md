@@ -4,6 +4,8 @@
 
 ## A light way to make communication between android and server using a predefine structure server response
 
+![Demo](https://github.com/yann-yvan/CodeHttp/blob/master/demo.gif)
+
 ## Features
 1. Prepare your request
 2. Use SpeedController to make request asynctask without building external or internal asynctask class
@@ -25,7 +27,7 @@ allprojects {
 #### Add gradle dependecy
 ```
 dependencies {
-   implementation 'com.github.yann-yvan:CodeHttp:V1.1'
+   implementation 'com.github.yann-yvan:CodeHttp:V1.2'
 }
 ```
 ### Step 3:
