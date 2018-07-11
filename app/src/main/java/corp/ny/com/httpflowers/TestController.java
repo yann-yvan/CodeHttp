@@ -73,7 +73,7 @@ public class TestController extends BaseController {
     }
 
     public void makePost(final TextView console) {
-        final DefaultResponse response = new DefaultResponse("login", false);
+        final DefaultResponse response = new DefaultResponse("login", true);
 
         console.append(String.format("\n\tRoute : %s", response.getPrepareRequest().getRoute()));
         console.append(String.format("\n\tSend : %s", response.getPrepareRequest().getOutgoing()));

@@ -72,7 +72,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.btn_fast_post:
                 SpeedController.run(
                         PrepareRequest.Method.POST,
-                        new DefaultResponse("test", false), new SpeedController.OnAfterExecute() {
+                        new DefaultResponse("test", true), new SpeedController.OnAfterExecute() {
                             @Override
                             public void play(DefaultResponse response) {
                                 Toast.makeText(MainActivity.this, "Good no error", Toast.LENGTH_SHORT).show();

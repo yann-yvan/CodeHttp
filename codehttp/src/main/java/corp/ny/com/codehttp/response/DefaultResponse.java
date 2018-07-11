@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import corp.ny.com.codehttp.models.PrepareRequest;
+import corp.ny.com.codehttp.models.Token;
 
 
 /**
@@ -16,7 +17,6 @@ import corp.ny.com.codehttp.models.PrepareRequest;
 public class DefaultResponse<T> {
     private boolean status;
     private int message;
-    private String token;
     private T model;
     private ArrayList<T> modelList;
     private String route;
@@ -24,16 +24,19 @@ public class DefaultResponse<T> {
     private HashMap family = new HashMap();
 
     public DefaultResponse(String route, JSONObject data, boolean isTokenRequired) throws JSONException {
-        prepareRequest.setRoute(route);
-        this.route = route;
-        prepareRequest.setTokenRequired(isTokenRequired);
+        initialize(route, isTokenRequired);
         if (data != null)
             prepareRequest.setOutgoing(data.toString());
     }
 
     public DefaultResponse(String route, boolean isTokenRequired) {
+        initialize(route, isTokenRequired);
+    }
+
+    private void initialize(String route, boolean isTokenRequired) {
         prepareRequest.setRoute(route);
         prepareRequest.setTokenRequired(isTokenRequired);
+        if (isTokenRequired) addToken();
         this.route = route;
     }
 
@@ -43,6 +46,7 @@ public class DefaultResponse<T> {
 
     public void setPrepareRequest(PrepareRequest prepareRequest) {
         prepareRequest.setRoute(route);
+        addToken();
         this.prepareRequest = prepareRequest;
     }
 
@@ -63,7 +67,7 @@ public class DefaultResponse<T> {
     }
 
     public String getToken() {
-        return token;
+        return Token.getToken();
     }
 
     /**
@@ -98,7 +102,7 @@ public class DefaultResponse<T> {
         this.status = jsonObject.getBoolean("status");
         this.message = jsonObject.getInt("message");
         if (jsonObject.has("token"))
-            this.token = jsonObject.getString("token");
+            Token.setToken(jsonObject.getString("token"));
     }
 
     public void addModelToList(T model) {
@@ -106,6 +110,22 @@ public class DefaultResponse<T> {
             modelList = new ArrayList<>();
         }
         modelList.add(model);
+    }
+
+    private void addToken() {
+        if (Token.getToken() != null)
+            try {
+                this.prepareRequest.getOutgoingJsonObject().put("token", Token.getToken());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+    }
+
+    /**
+     * Reset store token
+     */
+    public void resetToken() {
+        Token.reset();
     }
 
     public ArrayList<T> getModelList() {
