@@ -13,12 +13,18 @@ import static android.content.Context.MODE_PRIVATE;
 public class Token {
 
     public static String getToken() {
-        SharedPreferences preferences = App.getContext().getSharedPreferences(App.getContext().getString(R.string.app_name), MODE_PRIVATE);
-        return preferences.getString(Token.class.getSimpleName(), null);
+        return getPreference().getString(Token.class.getSimpleName(), null);
     }
 
     public static void setToken(String token) {
-        SharedPreferences preferences = App.getContext().getSharedPreferences(App.getContext().getString(R.string.app_name), MODE_PRIVATE);
-        preferences.edit().putString(Token.class.getSimpleName(), token).apply();
+        getPreference().edit().putString(Token.class.getSimpleName(), token).apply();
+    }
+
+    public static void reset() {
+        getPreference().edit().putString(Token.class.getSimpleName(), null).apply();
+    }
+
+    private static SharedPreferences getPreference() {
+        return App.getContext().getSharedPreferences(App.getContext().getString(R.string.app_name), MODE_PRIVATE);
     }
 }
