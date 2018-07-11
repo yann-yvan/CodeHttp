@@ -57,6 +57,7 @@ public class PrepareRequest implements Serializable {
 
     public void setTokenRequired(boolean tokenRequired) {
         this.tokenRequired = tokenRequired;
+        if (tokenRequired) addToken();
     }
 
     public JSONObject getIncomingJsonObject() {
@@ -94,6 +95,15 @@ public class PrepareRequest implements Serializable {
      */
     public JSONObject getOutgoingJsonObject() {
         return outgoing;
+    }
+
+    private void addToken() {
+        if (Token.getToken() != null)
+            try {
+                getOutgoingJsonObject().put("token", Token.getToken());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
     }
 
     public enum Method {

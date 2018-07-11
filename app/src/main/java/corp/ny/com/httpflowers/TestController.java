@@ -85,7 +85,6 @@ public class TestController extends BaseController {
 
                 try {
                     PrepareRequest request = new PrepareRequest();
-                    request.setOutgoing("json data");
                     //or you can set a JSonObject directly like this
                     request.getOutgoingJsonObject().put("email", "foo@codehttp.com");
                     response.setPrepareRequest(request);
