@@ -36,7 +36,6 @@ public class DefaultResponse<T> {
     private void initialize(String route, boolean isTokenRequired) {
         prepareRequest.setRoute(route);
         prepareRequest.setTokenRequired(isTokenRequired);
-        if (isTokenRequired) addToken();
         this.route = route;
     }
 
@@ -46,7 +45,7 @@ public class DefaultResponse<T> {
 
     public void setPrepareRequest(PrepareRequest prepareRequest) {
         prepareRequest.setRoute(route);
-        addToken();
+        prepareRequest.setTokenRequired(this.prepareRequest.isTokenRequired());
         this.prepareRequest = prepareRequest;
     }
 
@@ -110,15 +109,6 @@ public class DefaultResponse<T> {
             modelList = new ArrayList<>();
         }
         modelList.add(model);
-    }
-
-    private void addToken() {
-        if (Token.getToken() != null)
-            try {
-                this.prepareRequest.getOutgoingJsonObject().put("token", Token.getToken());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
     }
 
     /**
