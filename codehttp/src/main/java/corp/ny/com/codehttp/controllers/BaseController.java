@@ -202,7 +202,7 @@ public abstract class BaseController {
      * @param base64Picture the base64 string we want to save
      * @throws IOException is throw when there is an error when opening stream for wri
      */
-    public String saveBase64Picture(String fileName, String base64Picture, FileDirectoryName subFolder) throws IOException {
+    public String saveBase64Picture(String fileName, String base64Picture, String subFolder) throws IOException {
         //Second save the picture
         //--------------------------
         //Check if it is a base64 picture
@@ -213,7 +213,7 @@ public abstract class BaseController {
         File filesDir = getCacheDir();
         //Retrieve the name of the subfolder where your store your picture
         //(You have set it in your string ressources)
-        String pictureFolderName = "Pictures/" + subFolder.name().toLowerCase();
+        String pictureFolderName = "Pictures/" + subFolder.toLowerCase();
         //then create the subfolder
         File pictureDir = new File(filesDir, pictureFolderName);
         //Check if this subfolder exists
@@ -296,10 +296,6 @@ public abstract class BaseController {
         return new LoggingInterceptor();
     }
 
-    public enum FileDirectoryName {
-        PROFILE,
-        CAR
-    }
 
     /**
      * this class helps us to log all ours requests

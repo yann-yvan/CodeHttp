@@ -88,6 +88,7 @@ public final class RequestCode {
         FAILURE(1001),
         MISSING_DATA(1002),
         EXPIRED(1003),
+        DUPLICATE_DATA(1004),
         UNKNOWN_CODE(0);
         private int code;
 
