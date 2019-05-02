@@ -27,7 +27,7 @@
 
         <provider
             android:name=".system.CodeHttpInitProvider"
-            android:authorities="corp.ny.com.codehttp.system.CodeHttpInitProvider"
+            android:authorities="corp.ny.com.codehttp.codehttpinitprovider"
             android:exported="false"
             android:initOrder="100" />
     </application>
