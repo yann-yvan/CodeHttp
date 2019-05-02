@@ -104,6 +104,14 @@ public class DefaultResponse<T> {
             Token.setToken(jsonObject.getString("token"));
     }
 
+    /* public ArrayList<T> toModelList(T model) {
+         Moshi moshi = new Moshi.Builder().build();
+         //System.out.println(jsonObject.getJSONObject("user").toString(5));
+         JsonAdapter<T> adapter = moshi.adapter(T);
+         //deserialize the json
+
+     }
+ */
     public void addModelToList(T model) {
         if (modelList == null) {
             modelList = new ArrayList<>();

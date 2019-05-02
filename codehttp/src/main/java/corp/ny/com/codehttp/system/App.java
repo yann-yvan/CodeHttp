@@ -24,6 +24,12 @@ public class App extends Application {
         return mContext;
     }
 
+    public static void init(Context context) {
+        mContext = context;
+        mInstance = new App();
+        mInstance.onCreate();
+    }
+
     public static synchronized App getInstance() {
         return mInstance;
     }
@@ -31,10 +37,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        mContext = getApplicationContext();
-        mInstance = this;
         if (ManifestReader.getMetadataBoolean("DEBUG_MODE"))
-            debugger = new Debugger(mInstance);
+            debugger = new Debugger(mContext);
     }
 
     public Debugger getDebugger() {
