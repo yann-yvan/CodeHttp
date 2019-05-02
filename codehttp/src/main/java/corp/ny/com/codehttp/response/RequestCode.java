@@ -41,7 +41,7 @@ public final class RequestCode {
 
     public static DefResponse requestMessage(int code) {
         for (DefResponse response : DefResponse.values()
-                ) {
+        ) {
             if (response.equals(code))
                 return response;
         }
@@ -57,6 +57,7 @@ public final class RequestCode {
         WRONG_PASSWORD(1102),
         WRONG_CREDENTIALS(1103),
         ACCOUNT_VERIFIED(1104),
+        NOT_EXISTS(1105),
         UNKNOWN_CODE(0);
 
         private int code;
@@ -86,9 +87,12 @@ public final class RequestCode {
     public enum DefResponse implements Required {
         SUCCESS(1000),
         FAILURE(1001),
-        MISSING_DATA(1002),
+        @Deprecated MISSING_DATA(1002),
+        VALIDATION_ERROR(1002),
         EXPIRED(1003),
-        DUPLICATE_DATA(1004),
+        @Deprecated DUPLICATE_DATA(1004),
+        DATA_EXIST(1004),
+        NOT_AUTHORIZED(1005),
         UNKNOWN_CODE(0);
         private int code;
 
