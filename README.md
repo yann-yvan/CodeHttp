@@ -43,7 +43,7 @@ dependencies {
 ```
 
 ### Step 4: (optional)
-#### Enable debugger mode (Please make sure to delete the line or set it as false in production)
+#### Enable debugger mode (Please make sure to delete the line or set it to false in production)
 ```xml
   <manifest ...>
     <application...>
@@ -70,7 +70,7 @@ TestController.this.get(response);
 //a complete sample will be display below
 ```
 ### New features for speed controller
-Now we  this controller you yan execute request in a very simple way
+Now with  this controller you can execute request in a very simple way
 ```java
  SpeedController.run(
                         PrepareRequest.Method.POST,
