@@ -24,9 +24,9 @@ public class DefaultResponse<T> {
     private HashMap family = new HashMap();
 
     public DefaultResponse(String route, JSONObject data, boolean isTokenRequired) throws JSONException {
-        initialize(route, isTokenRequired);
         if (data != null)
             prepareRequest.setOutgoing(data.toString());
+        initialize(route, isTokenRequired);
     }
 
     public DefaultResponse(String route, boolean isTokenRequired) {

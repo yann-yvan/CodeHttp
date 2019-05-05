@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import corp.ny.com.codehttp.controllers.BaseController;
 import corp.ny.com.codehttp.exceptions.NoInternetException;
@@ -86,20 +85,9 @@ public class TestController extends BaseController {
                 try {
                     PrepareRequest request = new PrepareRequest();
                     //or you can set a JSonObject directly like this
-                    request.getOutgoingJsonObject().put("email", "foo@codehttp.com");
+                    request.getOutgoingJsonObject().put("email", "yann.ngalle@outlook.com").put("password", "Password");
                     response.setPrepareRequest(request);
-                    response.getPrepareRequest().getOutgoingJsonObject().put("user", new JSONObject()
-                            .put("email", "foo@codehttp.com")
-                            .put("password", 12345678)
-                            .put("password_float", 12345678f)
-                            .put("password_double", 12345678l)
-                            .put("active", false)
-                            .put("object", new JSONObject()
-                                    .put("email", "foo@codehttp.com")
-                                    .put("password", "12345678")
-                                    .put("active", false))
 
-                    );
                     return TestController.this.post(response);
                 } catch (NoInternetException e) {
                     exception = e.getMessage();
