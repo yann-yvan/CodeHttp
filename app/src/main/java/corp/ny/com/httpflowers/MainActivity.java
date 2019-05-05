@@ -6,6 +6,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import corp.ny.com.codehttp.controllers.SpeedController;
 import corp.ny.com.codehttp.exceptions.NoInternetException;
 import corp.ny.com.codehttp.exceptions.RequestException;
@@ -47,7 +50,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.btn_fast_get:
                 SpeedController.run(
                         PrepareRequest.Method.GET,
-                        new DefaultResponse("test", false), new SpeedController.OnAfterExecute() {
+                        new DefaultResponse("logout", true), new SpeedController.OnAfterExecute() {
                             @Override
                             public void play(DefaultResponse response) {
                                 if (response == null) {
@@ -70,26 +73,30 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                 break;
             case R.id.btn_fast_post:
-                SpeedController.run(
-                        PrepareRequest.Method.POST,
-                        new DefaultResponse("test", true), new SpeedController.OnAfterExecute() {
-                            @Override
-                            public void play(DefaultResponse response) {
-                                Toast.makeText(MainActivity.this, "Good no error", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void foundException(Exception e) {
-                                if (e instanceof NoInternetException) {
-                                    Toast.makeText(MainActivity.this, "OOPS " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                } else if (e instanceof RequestException) {
-                                    Toast.makeText(MainActivity.this, "OOPS " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                } else {//JSonException
-                                    Toast.makeText(MainActivity.this, "OOPS " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                try {
+                    SpeedController.run(
+                            PrepareRequest.Method.POST,
+                            new DefaultResponse("logout", new JSONObject(), true), new SpeedController.OnAfterExecute() {
+                                @Override
+                                public void play(DefaultResponse response) {
+                                    Toast.makeText(MainActivity.this, "Good no error", Toast.LENGTH_SHORT).show();
                                 }
 
-                            }
-                        });
+                                @Override
+                                public void foundException(Exception e) {
+                                    if (e instanceof NoInternetException) {
+                                        Toast.makeText(MainActivity.this, "OOPS " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    } else if (e instanceof RequestException) {
+                                        Toast.makeText(MainActivity.this, "OOPS " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    } else {//JSonException
+                                        Toast.makeText(MainActivity.this, "OOPS " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+                            });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
         }
     }
