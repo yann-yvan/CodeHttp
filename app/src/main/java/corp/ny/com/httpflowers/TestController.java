@@ -108,6 +108,8 @@ public class TestController extends BaseController {
                     console.append(String.format("\n\t%s", exception));
                     return;
                 }
+
+                response.canPaginateLaravel();
                 console.append(String.format("\n\tRoute : %s", response.getPrepareRequest().getRoute()));
                 console.append(String.format("\n\tReceive : %s", response.getPrepareRequest().getIncoming()));
                 console.append(String.format("\n\tMessage : %s", response.getMessage()));
