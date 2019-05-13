@@ -2,6 +2,7 @@ package corp.ny.com.httpflowers;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,12 +51,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.btn_fast_get:
                 SpeedController.run(
                         PrepareRequest.Method.GET,
-                        new DefaultResponse("logout", true), new SpeedController.OnAfterExecute() {
+                        new DefaultResponse("job-search", true), new SpeedController.OnAfterExecute() {
                             @Override
                             public void play(DefaultResponse response) {
                                 if (response == null) {
                                     return;
                                 }
+                                response.canPaginateLaravel();
                                 console.append(String.format("\n\tRoute : %s", response.getPrepareRequest().getRoute()));
                                 console.append(String.format("\n\tReceive : %s", response.getPrepareRequest().getIncoming()));
                                 console.append(String.format("\n\tMessage : %s", response.getMessage()));
@@ -76,9 +78,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 try {
                     SpeedController.run(
                             PrepareRequest.Method.POST,
-                            new DefaultResponse("logout", new JSONObject(), true), new SpeedController.OnAfterExecute() {
+                            new DefaultResponse("job-search", new JSONObject(), true), new SpeedController.OnAfterExecute() {
                                 @Override
                                 public void play(DefaultResponse response) {
+                                    response.canPaginateLaravel();
+                                    try {
+                                        Log.e("New query", response.getPrepareRequest().getOutgoingJsonObject().toString(5));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                     Toast.makeText(MainActivity.this, "Good no error", Toast.LENGTH_SHORT).show();
                                 }
 
@@ -97,8 +105,47 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                try {
+                    pagination(new DefaultResponse("job-search", new JSONObject(), true));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
         }
+    }
+
+
+    private void pagination(DefaultResponse response) {
+
+        SpeedController.run(
+                PrepareRequest.Method.POST,
+                response, new SpeedController.OnAfterExecute() {
+                    @Override
+                    public void play(DefaultResponse response) {
+
+                        if (response.canPaginateLaravel())
+                            pagination(response);
+                        try {
+                            console.append(response.getPrepareRequest().getIncomingJsonObject().toString(5));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(MainActivity.this, "Good no error", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void foundException(Exception e) {
+                        if (e instanceof NoInternetException) {
+                            Toast.makeText(MainActivity.this, "OOPS " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (e instanceof RequestException) {
+                            Toast.makeText(MainActivity.this, "OOPS " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {//JSonException
+                            Toast.makeText(MainActivity.this, "OOPS " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+
     }
 
     @Override
