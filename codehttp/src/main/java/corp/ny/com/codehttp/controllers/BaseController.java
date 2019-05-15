@@ -18,6 +18,7 @@ import java.io.InputStreamReader;
 import corp.ny.com.codehttp.R;
 import corp.ny.com.codehttp.exceptions.NoInternetException;
 import corp.ny.com.codehttp.exceptions.RequestException;
+import corp.ny.com.codehttp.exceptions.TokenException;
 import corp.ny.com.codehttp.internet.ConnectivityReceiver;
 import corp.ny.com.codehttp.models.PrepareRequest;
 import corp.ny.com.codehttp.response.DefaultResponse;
@@ -52,7 +53,7 @@ public abstract class BaseController {
      * @throws NoInternetException
      * @throws RequestException
      */
-    public DefaultResponse post(DefaultResponse response) throws NoInternetException, RequestException, JSONException {
+    public DefaultResponse post(DefaultResponse response) throws NoInternetException, RequestException, JSONException, TokenException {
         RequestBody body = RequestBody.create(mediaType, response.getPrepareRequest().getOutgoing());
         //build our request
         Request request = new Request.Builder().
@@ -69,7 +70,7 @@ public abstract class BaseController {
      * @throws NoInternetException
      * @throws RequestException
      */
-    public DefaultResponse get(DefaultResponse response) throws NoInternetException, RequestException, JSONException {
+    public DefaultResponse get(DefaultResponse response) throws NoInternetException, RequestException, JSONException, TokenException {
         //build our request
         Request request = new Request.Builder().
                 url(response.getPrepareRequest().getRoute()).
@@ -85,7 +86,7 @@ public abstract class BaseController {
      * @throws NoInternetException
      * @throws RequestException
      */
-    private DefaultResponse makeRequest(Request request, DefaultResponse defaultResponse) throws NoInternetException, RequestException, JSONException {
+    private DefaultResponse makeRequest(Request request, DefaultResponse defaultResponse) throws NoInternetException, RequestException, JSONException, TokenException {
         //get httpclient instance and prepare request execution
         Call callPost = getHttpClient().newCall(request);
         if (App.getInstance().getDebugger() != null) {
@@ -128,7 +129,8 @@ public abstract class BaseController {
             if (result.isTokenRequired())
                 result.getOutgoingJsonObject().put("token", defaultResponse.getToken());
             makeRequest(request, defaultResponse);
-        }
+        } else if (RequestCode.tokenMessage(defaultResponse.getMessage()) != RequestCode.Token.UNKNOWN_CODE)
+            throw new TokenException(RequestCode.tokenMessage(defaultResponse.getMessage()).toString(), defaultResponse.getMessage());
 
 
         return defaultResponse;

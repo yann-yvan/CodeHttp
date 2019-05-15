@@ -8,6 +8,7 @@ import org.json.JSONException;
 import corp.ny.com.codehttp.controllers.BaseController;
 import corp.ny.com.codehttp.exceptions.NoInternetException;
 import corp.ny.com.codehttp.exceptions.RequestException;
+import corp.ny.com.codehttp.exceptions.TokenException;
 import corp.ny.com.codehttp.models.PrepareRequest;
 import corp.ny.com.codehttp.response.DefaultResponse;
 import corp.ny.com.codehttp.response.RequestCode;
@@ -38,6 +39,8 @@ public class TestController extends BaseController {
                     e.printStackTrace();
                 } catch (JSONException e) {
                     exception = e.getMessage();
+                    e.printStackTrace();
+                } catch (TokenException e) {
                     e.printStackTrace();
                 }
                 return null;
@@ -97,6 +100,8 @@ public class TestController extends BaseController {
                     e.printStackTrace();
                 } catch (JSONException e) {
                     exception = e.getMessage();
+                    e.printStackTrace();
+                } catch (TokenException e) {
                     e.printStackTrace();
                 }
                 return null;
