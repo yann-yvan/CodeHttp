@@ -10,12 +10,16 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import corp.ny.com.codehttp.system.App;
 
 public class ConnectivityReceiver
         extends BroadcastReceiver {
 
     public static ConnectivityReceiverListener connectivityReceiverListener;
+    public static List<ConnectivityReceiverListener> connectivityReceiverListeners = new ArrayList<>();
 
     public ConnectivityReceiver() {
         super();
@@ -39,6 +43,9 @@ public class ConnectivityReceiver
                 && activeNetwork.isConnectedOrConnecting();
 
         if (connectivityReceiverListener != null) {
+            for (ConnectivityReceiverListener l : connectivityReceiverListeners) {
+                l.onNetworkConnectionChanged(isConnected);
+            }
             connectivityReceiverListener.onNetworkConnectionChanged(isConnected);
         }
     }
