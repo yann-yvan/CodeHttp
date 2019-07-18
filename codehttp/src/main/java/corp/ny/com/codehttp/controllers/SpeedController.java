@@ -66,6 +66,11 @@ public class SpeedController<T> extends BaseController {
             }
 
             @Override
+            protected void onProgressUpdate(Void... values) {
+                super.onProgressUpdate(values);
+            }
+
+            @Override
             protected void onPostExecute(DefaultResponse<T> response) {
                 if (exception != null)
                     afterExecute.foundException(exception);

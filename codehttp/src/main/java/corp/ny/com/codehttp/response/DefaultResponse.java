@@ -1,7 +1,5 @@
 package corp.ny.com.codehttp.response;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,7 +41,6 @@ public class DefaultResponse<T> {
     public boolean canPaginateLaravel() {
         JSONObject jsonObject = prepareRequest.getIncomingJsonObject();
         int nextPage = findPagination(jsonObject);
-        Log.e("next page", "" + nextPage);
         if (nextPage > 1) {
             try {
                 prepareRequest.setOutgoing(prepareRequest.getOutgoingJsonObject().put("page", nextPage).toString());

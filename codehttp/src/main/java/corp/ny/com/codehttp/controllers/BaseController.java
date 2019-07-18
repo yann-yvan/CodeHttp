@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.concurrent.TimeUnit;
 
 import corp.ny.com.codehttp.R;
 import corp.ny.com.codehttp.exceptions.NoInternetException;
@@ -146,10 +147,12 @@ public abstract class BaseController {
             //Assigning a CacheDirectory
             File myCacheDir = new File(cacheDir, "OkHttpCache");
             //define cache size
-            int cacheSize = 10 * 1024 * 1024; // 10 MiB
+            int cacheSize = 50 * 1024 * 1024; // 50 MiB
             Cache cacheDir = new Cache(myCacheDir, cacheSize);
             client = new OkHttpClient.Builder()
-                    .cache(cacheDir)//.readTimeout(15000, TimeUnit.MILLISECONDS)
+                    .cache(cacheDir)
+                    .retryOnConnectionFailure(true)
+                    .readTimeout(15000, TimeUnit.MILLISECONDS)
                     .addInterceptor(getInterceptor())
                     //.addInterceptor(new GzipInterceptor())
                     .build();

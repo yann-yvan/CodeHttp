@@ -54,4 +54,8 @@ public class App extends Application {
         ConnectivityReceiver.connectivityReceiverListener = listener;
     }
 
+    public void addConnectivityListener(ConnectivityReceiver.ConnectivityReceiverListener listener) {
+        ConnectivityReceiver.connectivityReceiverListeners.add(listener);
+    }
+
 }
