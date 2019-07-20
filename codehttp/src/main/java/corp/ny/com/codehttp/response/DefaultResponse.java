@@ -91,8 +91,15 @@ public class DefaultResponse<T> {
         this.route = route;
     }
 
-    public void addFile(FileType mediaType, String property, String fileName, String path) {
-        formParts.add(new FormPart(mediaType.toString(), property, fileName, path));
+    /**
+     * add file to request
+     *
+     * @param property
+     * @param fileName
+     * @param path
+     */
+    public void addFile(String property, String fileName, String path) {
+        formParts.add(new FormPart(FileType.getMediaType(fileName).toString(), property, fileName, path));
     }
 
     public List<FormPart> getFormParts() {
