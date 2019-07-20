@@ -54,6 +54,8 @@ public class SpeedController<T> extends BaseController {
             protected DefaultResponse<T> doInBackground(Void... voids) {
                 try {
                     switch (SpeedController.this.method) {
+                        case POST_FORM:
+                            return SpeedController.super.post(SpeedController.this.response, true);
                         case POST:
                             return SpeedController.super.post(SpeedController.this.response);
                         case GET:
@@ -107,7 +109,7 @@ public class SpeedController<T> extends BaseController {
         void play(DefaultResponse response);
 
         /**
-         * Fire when an {@link Exception} is raise<br>
+         * Fire when an Exception is raise<br>
          * Possible exception<br>
          * {@link NoInternetException}<br>
          * {@link RequestException}<br>

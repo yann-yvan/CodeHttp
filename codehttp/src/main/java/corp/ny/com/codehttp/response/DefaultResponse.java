@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import corp.ny.com.codehttp.models.PrepareRequest;
 import corp.ny.com.codehttp.models.Token;
@@ -22,6 +23,7 @@ public class DefaultResponse<T> {
     private String route;
     private PrepareRequest prepareRequest = new PrepareRequest();
     private HashMap family = new HashMap();
+    private List<FormPart> formParts = new ArrayList<>();
 
     public DefaultResponse(String route, JSONObject data, boolean isTokenRequired) throws JSONException {
         if (data != null)
@@ -87,6 +89,14 @@ public class DefaultResponse<T> {
         prepareRequest.setRoute(route);
         prepareRequest.setTokenRequired(isTokenRequired);
         this.route = route;
+    }
+
+    public void addFile(FileType mediaType, String property, String fileName, String path) {
+        formParts.add(new FormPart(mediaType.toString(), property, fileName, path));
+    }
+
+    public List<FormPart> getFormParts() {
+        return formParts;
     }
 
     public PrepareRequest getPrepareRequest() {

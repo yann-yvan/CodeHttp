@@ -23,12 +23,14 @@ import corp.ny.com.codehttp.exceptions.TokenException;
 import corp.ny.com.codehttp.internet.ConnectivityReceiver;
 import corp.ny.com.codehttp.models.PrepareRequest;
 import corp.ny.com.codehttp.response.DefaultResponse;
+import corp.ny.com.codehttp.response.FormPart;
 import corp.ny.com.codehttp.response.RequestCode;
 import corp.ny.com.codehttp.system.App;
 import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -56,6 +58,36 @@ public abstract class BaseController {
      */
     public DefaultResponse post(DefaultResponse response) throws NoInternetException, RequestException, JSONException, TokenException {
         RequestBody body = RequestBody.create(mediaType, response.getPrepareRequest().getOutgoing());
+        //build our request
+        Request request = new Request.Builder().
+                url(response.getPrepareRequest().getRoute()).
+                post(body).
+                build();
+        response.getPrepareRequest().setMethod(PrepareRequest.Method.POST);
+        return makeRequest(request, response);
+    }
+
+    /**
+     * Post data with form data such as file
+     *
+     * @param response the response container
+     * @return response object {@link DefaultResponse}
+     * @throws NoInternetException
+     * @throws RequestException
+     * @throws JSONException
+     * @throws TokenException
+     */
+    public DefaultResponse post(DefaultResponse response, boolean isWithFormPart) throws NoInternetException, RequestException, JSONException, TokenException {
+        MultipartBody.Builder multipartBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addPart(RequestBody.create(mediaType, response.getPrepareRequest().getOutgoing()));
+        if (isWithFormPart)
+            for (int i = 0; i < response.getFormParts().size(); i++) {
+                FormPart part = (FormPart) response.getFormParts().get(i);
+                multipartBody.addFormDataPart(part.getProperty(), part.getFileName(), part.getFile());
+            }
+        RequestBody body = multipartBody.build();
+
         //build our request
         Request request = new Request.Builder().
                 url(response.getPrepareRequest().getRoute()).
