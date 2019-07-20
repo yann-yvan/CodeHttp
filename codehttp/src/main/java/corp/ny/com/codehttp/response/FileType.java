@@ -4,7 +4,7 @@ public final class FileType {
 
     public static Type getMediaType(String fileName) {
         String[] fileNamePart = fileName.split(".");
-        String ext = fileNamePart[fileName.length() - 1].toLowerCase();
+        String ext = fileNamePart[fileNamePart.length - 1].toLowerCase();
         for (Type type : Type.values()) {
             if (type.media.contains(ext)) {
                 return type;

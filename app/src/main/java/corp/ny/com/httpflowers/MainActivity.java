@@ -107,6 +107,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 }
                 try {
                     pagination(new DefaultResponse("job-search", new JSONObject(), true));
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -130,6 +131,32 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        Toast.makeText(MainActivity.this, "Good no error", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void foundException(Exception e) {
+                        if (e instanceof NoInternetException) {
+                            Toast.makeText(MainActivity.this, "OOPS " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (e instanceof RequestException) {
+                            Toast.makeText(MainActivity.this, "OOPS " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {//JSonException
+                            Toast.makeText(MainActivity.this, "OOPS " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+
+    }
+
+    private void formPost(DefaultResponse response) {
+
+        SpeedController.run(
+                PrepareRequest.Method.POST_FORM,
+                response, new SpeedController.OnAfterExecute() {
+                    @Override
+                    public void play(DefaultResponse response) {
+
                         Toast.makeText(MainActivity.this, "Good no error", Toast.LENGTH_SHORT).show();
                     }
 
