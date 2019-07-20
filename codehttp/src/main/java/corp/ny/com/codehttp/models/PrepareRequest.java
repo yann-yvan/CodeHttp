@@ -60,6 +60,11 @@ public class PrepareRequest implements Serializable {
         if (tokenRequired) addToken();
     }
 
+    /**
+     * Get request response as {@link JSONObject}
+     *
+     * @return response
+     */
     public JSONObject getIncomingJsonObject() {
         return incoming;
     }
@@ -76,10 +81,19 @@ public class PrepareRequest implements Serializable {
         return route;
     }
 
+    /**
+     * Set request route
+     *
+     * @param route
+     */
     public void setRoute(String route) {
         this.route = String.format("%s/%s", ManifestReader.getMetadataString("BASE_URL"), route);
     }
 
+    /**
+     * Get sending data as string
+     * @return
+     */
     public String getOutgoing() {
         return outgoing.toString();
     }
@@ -108,6 +122,7 @@ public class PrepareRequest implements Serializable {
 
     public enum Method {
         POST,
-        GET
+        GET,
+        POST_FORM
     }
 }
