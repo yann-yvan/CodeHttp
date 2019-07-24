@@ -42,7 +42,7 @@ public class Debugger {
 
         notificationBuilder = new NotificationCompat.Builder(context, context.getString(R.string.app_name))
                 .setContentTitle("Debugger")
-                .setContentText("No history")
+                .setContentText("Make a request to see it")
                 .setPriority(Notification.FLAG_HIGH_PRIORITY)
                 // Set the intent that will fire when the user taps the notification
                 .setContentIntent(pendingIntent)

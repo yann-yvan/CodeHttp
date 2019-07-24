@@ -13,8 +13,10 @@ import org.json.JSONObject;
 import corp.ny.com.codehttp.controllers.SpeedController;
 import corp.ny.com.codehttp.exceptions.NoInternetException;
 import corp.ny.com.codehttp.exceptions.RequestException;
+import corp.ny.com.codehttp.internet.ConnectivityReceiver;
 import corp.ny.com.codehttp.models.PrepareRequest;
 import corp.ny.com.codehttp.response.DefaultResponse;
+import corp.ny.com.codehttp.system.App;
 
 /**
  * Created by Yann Yvan CEO of N.Y. Corp. on 31/05/18.
@@ -27,7 +29,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
         initialize();
-
+        App.getInstance().addConnectivityListener(new ConnectivityReceiver.ConnectivityReceiverListener() {
+            @Override
+            public void onNetworkConnectionChanged(boolean isConnected) {
+                Log.e("Online", isConnected + "");
+                Toast.makeText(MainActivity.this, "Online : " + isConnected + "", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initialize() {
@@ -75,7 +83,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                 break;
             case R.id.btn_fast_post:
-                try {
+                /*try {
                     SpeedController.run(
                             PrepareRequest.Method.POST,
                             new DefaultResponse("job-search", new JSONObject(), true), new SpeedController.OnAfterExecute() {
@@ -110,6 +118,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                }*/
+                try {
+
+                    JSONObject data = new JSONObject();
+                    data.put("job_description_id", 1)
+                            .put("phone", "687686886");
+
+                    DefaultResponse defaultResponse = new DefaultResponse("job-apply", data, true);
+                    defaultResponse.addFile("extResume", "file.pdf", "/storage/emulated/0/Telegram/Telegram Documents/4_5886697143858627953.pdf");
+                    defaultResponse.addFile("otherFiles[]", "file.pdf", "/storage/emulated/0/Telegram/Telegram Documents/4_5886697143858627953.pdf");
+                    formPost(defaultResponse);
+                } catch (Exception e) {
+                    console.append("\nConsole:~ no internet");
                 }
                 break;
         }
@@ -156,12 +177,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 response, new SpeedController.OnAfterExecute() {
                     @Override
                     public void play(DefaultResponse response) {
-
+                        console.append("\nConsole:~ " + response.getPrepareRequest().getIncomingJsonObject().toString());
                         Toast.makeText(MainActivity.this, "Good no error", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void foundException(Exception e) {
+                        console.append("\nConsole:~ " + e.getMessage());
                         if (e instanceof NoInternetException) {
                             Toast.makeText(MainActivity.this, "OOPS " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         } else if (e instanceof RequestException) {
