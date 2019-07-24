@@ -40,14 +40,26 @@ public class ConnectivityReceiver
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null
-                && activeNetwork.isConnectedOrConnecting();
+                && activeNetwork.isConnectedOrConnecting() && isDataConnected();
+        for (ConnectivityReceiverListener l : connectivityReceiverListeners) {
+            if (l != null)
+                l.onNetworkConnectionChanged(isConnected);
+        }
 
         if (connectivityReceiverListener != null) {
-            for (ConnectivityReceiverListener l : connectivityReceiverListeners) {
-                l.onNetworkConnectionChanged(isConnected);
-            }
             connectivityReceiverListener.onNetworkConnectionChanged(isConnected);
         }
+    }
+
+    public Boolean isDataConnected() {
+        try {
+            Process p1 = java.lang.Runtime.getRuntime().exec("ping -c 1 8.8.8.8");
+            int returnVal = p1.waitFor();
+            return (returnVal == 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 

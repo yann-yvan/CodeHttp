@@ -6,6 +6,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -79,8 +80,13 @@ public abstract class BaseController {
      */
     public DefaultResponse post(DefaultResponse response, boolean isWithFormPart) throws NoInternetException, RequestException, JSONException, TokenException {
         MultipartBody.Builder multipartBody = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addPart(RequestBody.create(mediaType, response.getPrepareRequest().getOutgoing()));
+                .setType(MultipartBody.FORM);
+        JSONObject data = response.getPrepareRequest().getOutgoingJsonObject();
+        if (data != null)
+            for (int j = 0; j < data.length(); j++) {
+                String key = data.names().getString(j);
+                multipartBody.addFormDataPart(key, data.get(key).toString());
+            }
         if (isWithFormPart)
             for (int i = 0; i < response.getFormParts().size(); i++) {
                 FormPart part = (FormPart) response.getFormParts().get(i);

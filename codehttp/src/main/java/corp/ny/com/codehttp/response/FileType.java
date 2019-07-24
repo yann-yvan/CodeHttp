@@ -1,9 +1,11 @@
 package corp.ny.com.codehttp.response;
 
+import android.text.TextUtils;
+
 public final class FileType {
 
     public static Type getMediaType(String fileName) {
-        String[] fileNamePart = fileName.split(".");
+        String[] fileNamePart = TextUtils.split(fileName, ".");
         String ext = fileNamePart[fileNamePart.length - 1].toLowerCase();
         for (Type type : Type.values()) {
             if (type.media.contains(ext)) {
