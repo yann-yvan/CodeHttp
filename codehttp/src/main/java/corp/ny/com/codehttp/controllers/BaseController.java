@@ -190,7 +190,7 @@ public abstract class BaseController {
             client = new OkHttpClient.Builder()
                     .cache(cacheDir)
                     .retryOnConnectionFailure(true)
-                    .readTimeout(15000, TimeUnit.MILLISECONDS)
+                    .readTimeout(30000, TimeUnit.MILLISECONDS)
                     .addInterceptor(getInterceptor())
                     //.addInterceptor(new GzipInterceptor())
                     .build();
