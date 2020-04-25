@@ -15,7 +15,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 import corp.ny.com.codehttp.R;
 import corp.ny.com.codehttp.exceptions.NoInternetException;
@@ -27,6 +35,7 @@ import corp.ny.com.codehttp.response.DefaultResponse;
 import corp.ny.com.codehttp.response.FormPart;
 import corp.ny.com.codehttp.response.RequestCode;
 import corp.ny.com.codehttp.system.App;
+import corp.ny.com.codehttp.utils.ManifestReader;
 import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Interceptor;
@@ -142,6 +151,7 @@ public abstract class BaseController {
         try {
             response = callPost.execute();
         } catch (IOException e) {
+            e.printStackTrace();
             defaultResponse.getPrepareRequest().getIncomingJsonObject().put("exception", e.getMessage());
             throw new RequestException(e.getMessage());
         }
@@ -185,18 +195,49 @@ public abstract class BaseController {
             //Assigning a CacheDirectory
             File myCacheDir = new File(cacheDir, "OkHttpCache");
             //define cache size
-            int cacheSize = 50 * 1024 * 1024; // 50 MiB
+            int cacheSize = 100 * 1024 * 1024; // 50 MiB
             Cache cacheDir = new Cache(myCacheDir, cacheSize);
-            client = new OkHttpClient.Builder()
+
+            OkHttpClient.Builder builder = new OkHttpClient.Builder()
                     .cache(cacheDir)
                     .retryOnConnectionFailure(true)
-                    .readTimeout(30000, TimeUnit.MILLISECONDS)
+                    .readTimeout(ManifestReader.getMetadataInt("HTTP_READ_TIMEOUT", 30000), TimeUnit.MILLISECONDS)
                     .addInterceptor(getInterceptor())
                     //.addInterceptor(new GzipInterceptor())
-                    .build();
+                    ;
+
+            /*try {
+                TLSSocketFactory tlsSocketFactory=new TLSSocketFactory();
+                if (tlsSocketFactory.getTrustManager() != null && ManifestReader.getMetadataBoolean("SSL_REQUIRED")) {
+                    Log.e("SSL_REQUIRED","ENABLE");
+                    builder.sslSocketFactory(tlsSocketFactory,tlsSocketFactory.getTrustManager());
+                }
+            } catch (KeyStoreException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (KeyManagementException e) {
+                e.printStackTrace();
+            }*/
+
+
+            client = builder.build();
         }
-        //now it's using the cacheresponse.body().string()
+        //now it's using the cache response.body().string()
         return client;
+    }
+
+    private X509TrustManager generateTrustManagers() throws KeyStoreException, NoSuchAlgorithmException {
+        TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        trustManagerFactory.init((KeyStore) null);
+        TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+
+        if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
+            throw new IllegalStateException("Unexpected default trust managers:"
+                    + Arrays.toString(trustManagers));
+        }
+
+        return (X509TrustManager) trustManagers[0];
     }
 
     /**
@@ -343,7 +384,7 @@ public abstract class BaseController {
     /**
      * this class helps us to log all ours requests
      */
-    private class LoggingInterceptor implements Interceptor {
+    private static class LoggingInterceptor implements Interceptor {
         //Code pasted from okHttp webSite itself
         @Override
         public Response intercept(Chain chain) throws IOException {
