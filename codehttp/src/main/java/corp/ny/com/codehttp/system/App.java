@@ -2,7 +2,6 @@ package corp.ny.com.codehttp.system;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 import corp.ny.com.codehttp.internet.ConnectivityReceiver;
 import corp.ny.com.codehttp.utils.Debugger;
@@ -56,7 +55,7 @@ public class App extends Application {
         ConnectivityReceiver.connectivityReceiverListener = listener;
     }
 
-    public void addConnectivityListener(@NonNull ConnectivityReceiver.ConnectivityReceiverListener listener) {
+    public void addConnectivityListener(ConnectivityReceiver.ConnectivityReceiverListener listener) {
         ConnectivityReceiver.connectivityReceiverListeners.add(listener);
     }
 

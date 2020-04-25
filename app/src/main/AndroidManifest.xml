@@ -12,9 +12,13 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="BASE_URL"
-            android:value="http://192.168.1.121:8000/api" />
+            android:value="https://pcs.sprint-pay.com/gateway/api" />
         <meta-data
             android:name="DEBUG_MODE"
+            android:value="true" />
+
+        <meta-data
+            android:name="SSL_REQUIRED"
             android:value="true" />
 
         <activity android:name=".MainActivity">

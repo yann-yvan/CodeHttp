@@ -37,6 +37,20 @@ public class ManifestReader {
         return 1;
     }
 
+    public static int getMetadataInt(String name, int defValue) {
+        try {
+            ApplicationInfo appInfo = App.getContext().getPackageManager().getApplicationInfo(
+                    App.getContext().getPackageName(), PackageManager.GET_META_DATA);
+            if (appInfo.metaData != null) {
+                return appInfo.metaData.getInt(name, defValue);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            // if we can’t find it in the manifest, just return null
+        }
+
+        return defValue;
+    }
+
     public static boolean getMetadataBoolean(String name) {
         try {
             ApplicationInfo appInfo = App.getContext().getPackageManager().getApplicationInfo(
