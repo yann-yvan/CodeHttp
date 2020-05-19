@@ -7,7 +7,6 @@ import org.json.JSONException;
 
 import corp.ny.com.codehttp.exceptions.NoInternetException;
 import corp.ny.com.codehttp.exceptions.RequestException;
-import corp.ny.com.codehttp.exceptions.TokenException;
 import corp.ny.com.codehttp.models.PrepareRequest;
 import corp.ny.com.codehttp.response.DefaultResponse;
 
@@ -55,13 +54,13 @@ public class SpeedController<T> extends BaseController {
                 try {
                     switch (SpeedController.this.method) {
                         case POST_FORM:
-                            return SpeedController.super.post(SpeedController.this.response, true);
+                            return SpeedController.super.postForm(SpeedController.this.response);
                         case POST:
                             return SpeedController.super.post(SpeedController.this.response);
                         case GET:
                             return SpeedController.super.get(SpeedController.this.response);
                     }
-                } catch (NoInternetException | RequestException | JSONException | TokenException e) {
+                } catch (Exception e) {
                     exception = e;
                 }
                 return SpeedController.this.response;

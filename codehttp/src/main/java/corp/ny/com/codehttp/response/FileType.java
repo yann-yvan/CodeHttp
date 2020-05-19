@@ -2,9 +2,11 @@ package corp.ny.com.codehttp.response;
 
 import android.text.TextUtils;
 
+import corp.ny.com.codehttp.exceptions.UnknownFileExtensionException;
+
 public final class FileType {
 
-    public static Type getMediaType(String fileName) {
+    public static Type getMediaType(String fileName) throws UnknownFileExtensionException {
         String[] fileNamePart = TextUtils.split(fileName, ".");
         String ext = fileNamePart[fileNamePart.length - 1].toLowerCase();
         for (Type type : Type.values()) {
@@ -12,7 +14,7 @@ public final class FileType {
                 return type;
             }
         }
-        return Type.TEXT;
+        throw new UnknownFileExtensionException();
     }
 
     /**

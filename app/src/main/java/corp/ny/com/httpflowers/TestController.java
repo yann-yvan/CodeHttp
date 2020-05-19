@@ -91,7 +91,7 @@ public class TestController extends BaseController {
                     request.getOutgoingJsonObject().put("email", "yann.ngalle@outlook.com").put("password", "Password");
                     response.setPrepareRequest(request);
 
-                    return TestController.this.post(response);
+                    return TestController.this.postForm(response);
                 } catch (NoInternetException e) {
                     exception = e.getMessage();
                     e.printStackTrace();
