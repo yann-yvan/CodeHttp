@@ -11,6 +11,7 @@ import org.json.JSONObject;
  * Created by Yann Yvan CEO of N.Y. Corp. on 08/06/18.
  */
 public final class SyntaxHighLight {
+
     public static void highLightData(JSONObject jsonObject, WebView view) {
         if (jsonObject.has("html")) {
             try {

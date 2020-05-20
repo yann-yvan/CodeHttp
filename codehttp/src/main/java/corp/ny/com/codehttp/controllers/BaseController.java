@@ -87,20 +87,23 @@ public abstract class BaseController {
      * @throws JSONException
      * @throws TokenException
      */
-    public DefaultResponse post(DefaultResponse response, boolean isWithFormPart) throws NoInternetException, RequestException, JSONException, TokenException {
+    public DefaultResponse postForm(DefaultResponse response) throws NoInternetException, RequestException, JSONException, TokenException {
         MultipartBody.Builder multipartBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM);
+
         JSONObject data = response.getPrepareRequest().getOutgoingJsonObject();
+
         if (data != null)
             for (int j = 0; j < data.length(); j++) {
                 String key = data.names().getString(j);
                 multipartBody.addFormDataPart(key, data.get(key).toString());
             }
-        if (isWithFormPart)
-            for (int i = 0; i < response.getFormParts().size(); i++) {
-                FormPart part = (FormPart) response.getFormParts().get(i);
-                multipartBody.addFormDataPart(part.getProperty(), part.getFileName(), part.getFile());
-            }
+
+        for (int i = 0; i < response.getFormParts().size(); i++) {
+            FormPart part = (FormPart) response.getFormParts().get(i);
+            multipartBody.addFormDataPart(part.getProperty(), part.getFileName(), part.getFile());
+        }
+
         RequestBody body = multipartBody.build();
 
         //build our request
@@ -108,7 +111,7 @@ public abstract class BaseController {
                 url(response.getPrepareRequest().getRoute()).
                 post(body).
                 build();
-        response.getPrepareRequest().setMethod(PrepareRequest.Method.POST);
+        response.getPrepareRequest().setMethod(PrepareRequest.Method.POST_FORM);
         return makeRequest(request, response);
     }
 

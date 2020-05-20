@@ -2,6 +2,7 @@ package corp.ny.com.codehttp.response;
 
 import java.io.File;
 
+import corp.ny.com.codehttp.exceptions.UnknownFileExtensionException;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -11,8 +12,8 @@ public class FormPart {
     private String fileName;
     private String filePath;
 
-    public FormPart(String mediaType, String property, String fileName, String filePath) {
-        this.mediaType = mediaType;
+    public FormPart(String property, String fileName, String filePath) throws UnknownFileExtensionException {
+        this.mediaType = FileType.getMediaType(fileName).toString();
         this.property = property;
         this.fileName = fileName;
         this.filePath = filePath;
@@ -20,10 +21,6 @@ public class FormPart {
 
     public String getMediaType() {
         return mediaType;
-    }
-
-    public void setMediaType(String mediaType) {
-        this.mediaType = mediaType;
     }
 
     public String getProperty() {

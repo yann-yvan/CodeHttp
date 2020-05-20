@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import corp.ny.com.codehttp.exceptions.UnknownFileExtensionException;
 import corp.ny.com.codehttp.models.PrepareRequest;
 import corp.ny.com.codehttp.models.Token;
 
@@ -94,12 +95,12 @@ public class DefaultResponse<T> {
     /**
      * add file to request
      *
-     * @param property
-     * @param fileName
-     * @param path
+     * @param property file form name
+     * @param fileName original file name
+     * @param path of the file
      */
-    public void addFile(String property, String fileName, String path) {
-        formParts.add(new FormPart(FileType.getMediaType(fileName).toString(), property, fileName, path));
+    public void addFile(String property, String fileName, String path) throws UnknownFileExtensionException {
+        formParts.add(new FormPart(property, fileName, path));
     }
 
     public List<FormPart> getFormParts() {
