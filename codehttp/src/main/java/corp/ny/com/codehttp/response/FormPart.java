@@ -13,7 +13,7 @@ public class FormPart {
     private String filePath;
 
     public FormPart(String property, String fileName, String filePath) throws UnknownFileExtensionException {
-        this.mediaType = FileType.getMediaType(fileName).toString();
+        this.mediaType = FileType.getMediaType(fileName);
         this.property = property;
         this.fileName = fileName;
         this.filePath = filePath;
