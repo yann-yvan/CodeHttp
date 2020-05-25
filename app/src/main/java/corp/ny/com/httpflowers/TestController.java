@@ -1,6 +1,7 @@
 package corp.ny.com.httpflowers;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -9,8 +10,10 @@ import corp.ny.com.codehttp.controllers.BaseController;
 import corp.ny.com.codehttp.exceptions.NoInternetException;
 import corp.ny.com.codehttp.exceptions.RequestException;
 import corp.ny.com.codehttp.exceptions.TokenException;
+import corp.ny.com.codehttp.exceptions.UnknownFileExtensionException;
 import corp.ny.com.codehttp.models.PrepareRequest;
 import corp.ny.com.codehttp.response.DefaultResponse;
+import corp.ny.com.codehttp.response.FileType;
 import corp.ny.com.codehttp.response.RequestCode;
 
 /**
@@ -76,6 +79,15 @@ public class TestController extends BaseController {
 
     public void makePost(final TextView console) {
         final DefaultResponse response = new DefaultResponse("login", true);
+        String[] files = {"a.pdf", "a.docx", "a.doc", "a.ppt", "a.png", "a.pdt"};
+        for (String s : files
+        ) {
+            try {
+                Log.e("MIME", FileType.getMediaType(s));
+            } catch (UnknownFileExtensionException e) {
+                e.printStackTrace();
+            }
+        }
 
         console.append(String.format("\n\tRoute : %s", response.getPrepareRequest().getRoute()));
         console.append(String.format("\n\tSend : %s", response.getPrepareRequest().getOutgoing()));
