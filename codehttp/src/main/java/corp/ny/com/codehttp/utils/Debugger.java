@@ -1,9 +1,13 @@
 package corp.ny.com.codehttp.utils;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
@@ -13,8 +17,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import corp.ny.com.codehttp.BuildConfig;
 import corp.ny.com.codehttp.R;
 import corp.ny.com.codehttp.models.PrepareRequest;
+import corp.ny.com.codehttp.system.App;
 import corp.ny.com.codehttp.views.ItemListActivity;
 
 /**
@@ -33,6 +39,9 @@ public class Debugger {
 
     public Debugger(Context context) {
         this.intent = new Intent(context, ItemListActivity.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannels();
+        }
         initialize(context);
     }
 
@@ -40,7 +49,7 @@ public class Debugger {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        notificationBuilder = new NotificationCompat.Builder(context, context.getString(R.string.app_name))
+        notificationBuilder = new NotificationCompat.Builder(context, BuildConfig.LIBRARY_PACKAGE_NAME)
                 .setContentTitle("Debugger")
                 .setContentText("Make a request to see it")
                 .setPriority(Notification.FLAG_HIGH_PRIORITY)
@@ -51,6 +60,26 @@ public class Debugger {
 
         // notificationId is a unique int for each notification that you must define
         notificationManager.notify(notificationId, notificationBuilder.build());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static NotificationChannel createAppNotificationChanel(final int chanelImportance) {
+        NotificationChannel channel = new NotificationChannel(BuildConfig.LIBRARY_PACKAGE_NAME, "CodeHttp", chanelImportance);
+        channel.setDescription("Log App Http request");
+        channel.setShowBadge(true);
+        return channel;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static void createNotificationChannels() {
+        final List<NotificationChannel> channels = new ArrayList<>();
+        channels.add(createAppNotificationChanel(
+                NotificationManagerCompat.IMPORTANCE_HIGH));
+        final NotificationManager notificationManager = (NotificationManager)
+                App.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.createNotificationChannels(channels);
+        }
     }
 
     public void addToHistory(PrepareRequest request) {

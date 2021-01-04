@@ -19,6 +19,8 @@ import corp.ny.com.codehttp.models.Token;
 public class DefaultResponse<T> {
     private boolean status;
     private int message;
+    private int messageCode;
+    private String messageText;
     private T model;
     private ArrayList<T> modelList;
     private String route;
@@ -97,7 +99,7 @@ public class DefaultResponse<T> {
      *
      * @param property file form name
      * @param fileName original file name
-     * @param path of the file
+     * @param path     of the file
      */
     public void addFile(String property, String fileName, String path) throws UnknownFileExtensionException {
         formParts.add(new FormPart(property, fileName, path));
@@ -121,8 +123,21 @@ public class DefaultResponse<T> {
         return status;
     }
 
+    /**
+     * Use getMessageCode Instead
+     * @return
+     */
+    @Deprecated
     public int getMessage() {
         return message;
+    }
+
+    public int getMessageCode() {
+        return messageCode;
+    }
+
+    public String getMessageText() {
+        return messageText;
     }
 
     public T getModel() {
@@ -167,7 +182,12 @@ public class DefaultResponse<T> {
      */
     private void toDefault(JSONObject jsonObject) throws JSONException {
         this.status = jsonObject.getBoolean("status");
-        this.message = jsonObject.getInt("message");
+        if (jsonObject.has("code")) {
+            this.message = jsonObject.getInt("code");
+            this.messageCode = jsonObject.getInt("code");
+            this.messageText = jsonObject.getString("message");
+        } else
+            this.message = jsonObject.getInt("message");
         if (jsonObject.has("token"))
             Token.setToken(jsonObject.getString("token"));
     }
