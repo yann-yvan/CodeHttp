@@ -78,7 +78,7 @@ public class TestController extends BaseController {
     }
 
     public void makePost(final TextView console) {
-        final DefaultResponse response = new DefaultResponse("login", true);
+        final DefaultResponse response = new DefaultResponse("user/login", true);
         String[] files = {"a.pdf", "a.docx", "a.doc", "a.ppt", "a.png", "a.pdt"};
         for (String s : files
         ) {

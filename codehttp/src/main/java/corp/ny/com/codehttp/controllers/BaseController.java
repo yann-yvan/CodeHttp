@@ -2,6 +2,7 @@ package corp.ny.com.codehttp.controllers;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.Log;
 
@@ -375,7 +376,7 @@ public abstract class BaseController {
         Log.i("pictures path", filePicture.getPath());
         fos.flush();
         fos.close();
-        //return picture pathreturn response()->json(['status' => false,
+        //return picture path return response()->json(['status' => false,
         return filePicture.getPath();
     }
 
@@ -389,6 +390,7 @@ public abstract class BaseController {
      */
     private static class LoggingInterceptor implements Interceptor {
         //Code pasted from okHttp webSite itself
+        @NonNull
         @Override
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
@@ -397,7 +399,7 @@ public abstract class BaseController {
                     request.url(), chain.connection(), request.headers()));
             Response response = chain.proceed(request);
             long t2 = System.nanoTime();
-            Log.i("Interceptor request", String.format("Received response for %s in .1fms%n%s",
+            Log.i("Interceptor request", String.format("Received response for %s in .1fm%s%n%s",
                     response.request().url(), (t2 - t1) / 1e6d, response.headers()));
             return response;
         }

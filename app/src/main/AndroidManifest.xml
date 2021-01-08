@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="BASE_URL"
-            android:value="https://pcs.sprint-pay.com/gateway/api" />
+            android:value="https://auth-intimeo.herokuapp.com/api" />
         <meta-data
             android:name="DEBUG_MODE"
             android:value="true" />
