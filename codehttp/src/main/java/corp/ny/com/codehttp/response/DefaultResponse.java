@@ -171,7 +171,7 @@ public class DefaultResponse<T> {
     public void parseFromJson() throws JSONException {
         JSONObject jsonObject = new JSONObject(prepareRequest.getIncoming());
         int items = jsonObject.length();
-        if (items < 2 || items > 4)
+        if (items < 2 || items > 5)
             throw new JSONException("Wrong response format " + jsonObject.toString(6));
         toDefault(jsonObject);
     }
