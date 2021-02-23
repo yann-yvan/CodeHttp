@@ -56,7 +56,53 @@ public class DefaultResponse<T> {
         return false;
     }
 
+    /**
+     * Handle Laravel pagination
+     *
+     * @return
+     */
+    public boolean canPaginateLaravelV2() {
+        JSONObject jsonObject = prepareRequest.getIncomingJsonObject();
+        int nextPage = findPagination(jsonObject);
+        if (nextPage > 1) {
+            try {
+                prepareRequest.setOutgoing(prepareRequest.getOutgoingJsonObject().put("page", nextPage).toString());
+            } catch (JSONException ignore) {
+            }
+            return true;
+        }
+        return false;
+    }
+
     private int findPagination(JSONObject jsonObject) {
+        String nextPageUrl = "next_page_url";
+        String currentPage = "current_page";
+        String lastPage = "last_page";
+        int nextPage = -1;
+        for (int i = 0; i < jsonObject.length(); i++) {
+
+            //retrieve the key
+            try {
+                String key = jsonObject.names().getString(i);
+                //Log.e("Key", key);
+                if (key.equalsIgnoreCase(nextPageUrl)) {
+                    // Log.e("Target", "Found");
+                    if (jsonObject.getString(nextPageUrl) != null &&
+                            jsonObject.getInt(lastPage) > jsonObject.getInt(currentPage)) {
+                        nextPage = jsonObject.getInt(currentPage) + 1;
+                    }
+                    return nextPage;
+                }
+                //check if it is an object
+                nextPage = findPagination(jsonObject.getJSONObject(key));
+            } catch (JSONException ignore) {
+
+            }
+        }
+        return nextPage;
+    }
+
+    private int findPaginationV2(JSONObject jsonObject) {
         String nextPageUrl = "next_page_url";
         String currentPage = "current_page";
         String lastPage = "last_page";
