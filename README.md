@@ -57,7 +57,7 @@ dependencies {
 ```java
 final DefaultResponse response = new DefaultResponse("login", false);
 //First argument the route of the request
-//Second argument is a boolean that define whetter  the request should include token or not
+//Second argument is a boolean that define whether  the request should include token or not
 PrepareRequest request = new PrepareRequest();
 request.setOutgoing("json data");
 //or you can set a JSonObject directly like this
@@ -112,7 +112,7 @@ Your json file should not have more than 4 fields and not let's than 2 fields
  "data":"what ever you want"
 }
 ```
-Here you can identify how to make and action accordind to server message
+Here you can identify how to make and action according to server message
 ```java
  switch (RequestCode.requestMessage(response.getMessage())) {
 
